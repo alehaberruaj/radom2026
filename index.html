@@ -31,14 +31,14 @@
   #panel { position: fixed; bottom: 0; left: 0; right: 0; z-index: 2000; background: var(--surface); border-top: 1px solid var(--border); border-radius: 18px 18px 0 0; transform: translateY(100%); transition: transform 0.32s cubic-bezier(0.4,0,0.2,1); max-height: 82vh; display: flex; flex-direction: column; }
   #panel.peek { transform: translateY(calc(100% - 90px)); }
   #panel.open { transform: translateY(0); }
-  #panel-handle { width: 36px; height: 4px; background: var(--border); border-radius: 2px; margin: 12px auto 0; flex-shrink: 0; }
+  #panel-handle { width: 48px; height: 5px; background: #555; border-radius: 3px; margin: 12px auto 4px; flex-shrink: 0; cursor: pointer; padding: 8px 0; background-clip: content-box; }
   #panel-header { padding: 14px 20px 12px; border-bottom: 1px solid var(--border); flex-shrink: 0; display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
   #panel-number { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--red-light); margin-bottom: 4px; }
   #panel-number.familia-color { color: #7EB3D8; }
   #panel-title { font-family: var(--font-serif); font-size: 20px; color: var(--text); line-height: 1.25; }
   #panel-address { font-size: 12px; color: var(--text-dim); margin-top: 4px; letter-spacing: 0.02em; }
 
-  #panel-body { overflow-y: auto; padding: 20px 20px 40px; flex: 1; -webkit-overflow-scrolling: touch; display: none; }
+  #panel-body { overflow-y: auto; padding: 20px 20px 40px; flex: 1; -webkit-overflow-scrolling: touch; display: none; overscroll-behavior: contain; }
   #panel-body p { font-family: var(--font-serif); font-size: 19px; line-height: 1.65; color: var(--text); margin-bottom: 20px; }
   #panel-body p.destacado { background: var(--surface2); border-left: 3px solid var(--red); padding: 12px 14px; font-size: 17px; line-height: 1.5; margin-bottom: 20px; }
   #panel-body p.destacado.familia-border { border-color: #7EB3D8; }
@@ -368,7 +368,9 @@ function expandPanel() {
   const panel = document.getElementById('panel');
   panel.classList.remove('peek');
   panel.classList.add('open');
-  document.getElementById('panel-body').style.display = 'block';
+  const body = document.getElementById('panel-body');
+  body.style.display = 'block';
+  body.scrollTop = 0;
   document.getElementById('panel-expand').style.display = 'none';
   document.getElementById('overlay').classList.add('show');
 }
@@ -384,17 +386,25 @@ function closePanel() {
 }
 
 document.getElementById('overlay').addEventListener('click', closePanel);
+// Swipe only on handle — not on scrollable body
 let startY = 0;
-document.getElementById('panel').addEventListener('touchstart', e => { startY = e.touches[0].clientY; });
-document.getElementById('panel').addEventListener('touchend', e => {
+const handle = document.getElementById('panel-handle');
+handle.addEventListener('touchstart', e => { startY = e.touches[0].clientY; }, { passive: true });
+handle.addEventListener('touchend', e => {
   const dy = e.changedTouches[0].clientY - startY;
   const panel = document.getElementById('panel');
-  if (dy > 60) {
-    if (panel.classList.contains('open')) { closePanel(); }
-    else if (panel.classList.contains('peek')) { closePanel(); }
-  } else if (dy < -40) {
-    if (panel.classList.contains('peek')) { expandPanel(); }
+  if (dy > 30) {
+    closePanel();
+  } else if (dy < -30) {
+    if (panel.classList.contains('peek')) expandPanel();
   }
+});
+
+// Also make handle clickable to toggle
+handle.addEventListener('click', () => {
+  const panel = document.getElementById('panel');
+  if (panel.classList.contains('peek')) expandPanel();
+  else if (panel.classList.contains('open')) closePanel();
 });
 </script>
 </body>
