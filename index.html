@@ -39,7 +39,7 @@
   #panel-close { background: var(--surface2); border: none; color: var(--text-dim); width: 30px; height: 30px; border-radius: 50%; font-size: 18px; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 2px; }
   #panel-body { overflow-y: auto; padding: 20px 20px 40px; flex: 1; -webkit-overflow-scrolling: touch; }
   #panel-body p { font-family: var(--font-serif); font-size: 19px; line-height: 1.65; color: var(--text); margin-bottom: 20px; }
-  #panel-body p.destacado { background: var(--surface2); border-left: 3px solid var(--red); padding: 12px 14px; font-size: 17px; line-height: 1.5; }
+  #panel-body p.destacado { background: var(--surface2); border-left: 3px solid var(--red); padding: 12px 14px; font-size: 17px; line-height: 1.5; margin-bottom: 20px; }
   #panel-body p.destacado.familia-border { border-color: #7EB3D8; }
   .foto-bloque { margin-bottom: 24px; }
   .foto-bloque img { width: 100%; display: block; border-radius: 6px; }
@@ -97,35 +97,58 @@ const PARADAS = [
     ]
   },
   {
-    id: 2, tipo: "familia",
-    nombre: "Wałowa — centro del ghetto",
-    direccion: "Wałowa 1 (entrar al patio interior) · Wałowa 11a",
-    lat: 51.4016, lng: 21.1433,
+    id: 2, tipo: "historico",
+    nombre: "El cartel de Mentlik",
+    direccion: "Wałowa 1 — entrar al patio interior, pared del fondo a la derecha",
+    lat: 51.4017, lng: 21.1436,
     fotos: [],
     contenido: [
-      { tipo: "normal", texto: "Wałowa era el eje central de la vida judía de Radom desde el siglo XVIII. Acá estaban concentradas las tiendas, los talleres, los shtiebels (pequeñas sinagogas), la mikve y los negocios de la comunidad. El Judenrat — el consejo judío obligado por los alemanes a administrar el ghetto — también tenía su sede en esta zona." },
-      { tipo: "normal", texto: "En el patio interior del número 1 se conserva un cartel pintado directamente sobre la pared en yiddish: es el aviso del hotel y restaurante kosher de Abram Mentlik, del período de entreguerras. Es uno de los pocos vestigios físicos de la vida comercial judía que sobrevivió en la ciudad." },
-      { tipo: "destacado", texto: "En el número 11a vivían Miriam Basia Mekler Kiman y sus hijos — tus medios hermanos. Tu papá Lejbus Mekler se escapó antes de que se formara el ghetto." },
-      { tipo: "normal", texto: "Durante la liquidación del Ghetto Grande, en agosto de 1942, los habitantes fueron concentrados en Wałowa y la plaza del mercado antes de ser deportados. Lo más probable es que Miriam Basia y los hijos hayan sido parte de esa deportación." },
-      { tipo: "normal", texto: "La liquidación del Ghetto Grande se ejecutó entre el 16 y el 18 de agosto de 1942. Unidades de las SS, la Gestapo, gendarmes alemanes y fuerzas auxiliares ucranianas rodearon el ghetto. Operaron de noche, con reflectores instalados en las esquinas. Sacaron a los habitantes edificio por edificio. Quienes resistían eran ejecutados en el lugar. Los demás fueron formados en columnas y llevados a pie hasta un desvío ferroviario junto a la fábrica Marwil, donde los subieron a vagones de carga con destino a Treblinka." },
-      { tipo: "normal", texto: "En tres noches fueron deportadas unas 25.000 personas. La casi totalidad fue asesinada en Treblinka." },
+      { tipo: "normal", texto: "En el patio interior de este edificio, en la pared del fondo a la derecha, hay un cartel pintado directamente sobre el muro en yiddish. Es el aviso publicitario del hotel y restaurante kosher de Abram Mentlik, del período de entreguerras." },
+      { tipo: "normal", texto: "El texto dice: Hotel de comerciantes / A. Mentlik / Piso 1. Junto al texto hay una mano con el dedo índice señalando hacia arriba — un recurso tipográfico habitual en los avisos comerciales de la época." },
+      { tipo: "destacado", texto: "El cartel sobrevivió la guerra, la ocupación soviética y ochenta años de abandono. Es uno de los pocos rastros físicos visibles de la vida comercial judía que quedan en Radom." },
+      { tipo: "normal", texto: "Wałowa era antes de la guerra la calle comercial más activa del barrio judío. Acá se concentraban tiendas, talleres, panaderías kosher, librerías y pequeñas sinagogas. El barrio tenía también una mikve y varias instituciones comunitarias." },
     ]
   },
   {
-    id: 3, tipo: "familia",
+    id: 3, tipo: "historico",
+    nombre: "Wałowa — la calle principal del ghetto",
+    direccion: "Wałowa",
+    lat: 51.4013, lng: 21.1430,
+    fotos: [],
+    contenido: [
+      { tipo: "normal", texto: "Wałowa era el eje central de la vida judía de Radom desde el siglo XVIII. Cuando en 1941 se estableció el Ghetto Grande, esta calle quedó en el corazón del área sellada. El Judenrat — el consejo judío obligado por los alemanes a administrar el ghetto — tenía su sede aquí." },
+      { tipo: "normal", texto: "En febrero de 1942 los alemanes ejecutaron a varias decenas de personas en el ghetto y deportaron a unos 40 dirigentes comunitarios a Auschwitz. En abril de 1942, en la llamada Acción del Miércoles Sangriento, detuvieron y enviaron a Auschwitz a representantes del Judenrat, la policía judía y activistas políticos. Estas operaciones tenían como objetivo desarticular cualquier posibilidad de resistencia organizada antes de la liquidación." },
+      { tipo: "normal", texto: "La liquidación del Ghetto Grande se ejecutó entre el 16 y el 18 de agosto de 1942. Unidades de las SS, la Gestapo, gendarmes alemanes y fuerzas auxiliares ucranianas rodearon el ghetto. Operaron de noche, con reflectores instalados en las esquinas. Sacaron a los habitantes edificio por edificio." },
+      { tipo: "destacado", texto: "Los habitantes fueron concentrados en Wałowa y la plaza del mercado, y llevados a pie hasta un desvío ferroviario junto a la fábrica Marwil. Desde ahí, en vagones de carga, a Treblinka. En tres noches fueron deportadas unas 25.000 personas. La casi totalidad fue asesinada." },
+    ]
+  },
+  {
+    id: 4, tipo: "familia",
+    nombre: "La casa de Miriam Basia y los hijos",
+    direccion: "Wałowa 11a",
+    lat: 51.4010, lng: 21.1425,
+    fotos: [],
+    contenido: [
+      { tipo: "destacado", texto: "En este edificio vivían Miriam Basia Mekler Kiman y sus hijos — tus medios hermanos. Tu papá Lejbus Mekler se había escapado antes de que se formara el ghetto." },
+      { tipo: "normal", texto: "Wałowa 11a quedaba dentro del perímetro del Ghetto Grande. Miriam Basia y los hijos vivieron acá durante los años del ghetto, entre 1941 y 1942." },
+      { tipo: "normal", texto: "Durante la liquidación de agosto de 1942, los habitantes de esta calle fueron parte de las columnas concentradas en Wałowa antes de ser deportados. Lo más probable es que Miriam Basia y los hijos hayan sido deportados a Treblinka en esas tres noches." },
+    ]
+  },
+  {
+    id: 5, tipo: "familia",
     nombre: "Los que quedaron",
     direccion: "Szwarlikowska",
     lat: 51.4039, lng: 21.1426,
     fotos: [],
     contenido: [
-      { tipo: "normal", texto: "Tras la liquidación de agosto de 1942, los alemanes retuvieron a unos 2.000 judíos considerados útiles como mano de obra. Fueron concentrados en esta calle, que quedó convertida en un campo de trabajo forzado — Zwangs-Arbeits-Lager. El resto del ghetto fue vaciado." },
+      { tipo: "normal", texto: "Tras la liquidación de agosto de 1942, los alemanes retuvieron a unos 2.000 judíos considerados útiles como mano de obra. Fueron concentrados en esta calle, convertida en un campo de trabajo forzado — Zwangs-Arbeits-Lager. El resto del ghetto fue vaciado." },
       { tipo: "destacado", texto: "Tu mamá Jacheta Wajsbort, que vivía en Mireckiego 8/10, fue una de las personas seleccionadas para permanecer en este campo." },
-      { tipo: "normal", texto: "Los trabajadores del campo de Szwarlikowska fueron empleados principalmente en la fábrica de armamentos Steyer-Daimler-Puch y en talleres de sastrería, zapatería y relojería. El campo fue liquidado en noviembre de 1942: parte de los prisioneros fueron trasladados al nuevo campo de la calle Szkolna, otros enviados a los campos de Płaszów y Ostrowiec Świętokrzyski." },
+      { tipo: "normal", texto: "Los trabajadores fueron empleados principalmente en la fábrica de armamentos Steyer-Daimler-Puch y en talleres de sastrería, zapatería y relojería. El campo fue liquidado en noviembre de 1942: parte de los prisioneros fueron trasladados al nuevo campo de la calle Szkolna, otros enviados a los campos de Płaszów y Ostrowiec Świętokrzyski." },
       { tipo: "normal", texto: "El campo de Szkolna operó hasta julio de 1944, cuando los prisioneros restantes fueron evacuados a pie hacia Tomaszów Mazowiecki y de ahí en tren a Auschwitz." },
     ]
   },
   {
-    id: 4, tipo: "historico",
+    id: 6, tipo: "historico",
     nombre: "El monumento — sitio de la Gran Sinagoga",
     direccion: "Bóżniczna 3",
     lat: 51.401, lng: 21.1431,
@@ -135,12 +158,12 @@ const PARADAS = [
     contenido: [
       { tipo: "normal", texto: "En este terreno estuvo la Gran Sinagoga de Radom, construida en el siglo XIX. Los alemanes la incendiaron en septiembre de 1939, poco después de ocupar la ciudad. Las ruinas fueron demolidas por orden del gobierno comunista polaco en la posguerra." },
       { tipo: "normal", texto: "En 1947 los sobrevivientes judíos que quedaban en Radom iniciaron una colecta para construir un monumento. El autor fue un escultor local que había sobrevivido el Holocausto. Utilizó materiales recuperados de las ruinas de la sinagoga y fragmentos de lápidas del cementerio judío destruido por los nazis." },
-      { tipo: "destacado", texto: "El monumento fue inaugurado el 8 de agosto de 1950, en el aniversario de la liquidación del Ghetto Grande. Es un obelisco truncado con la figura en relieve de una mujer con el puño levantado. Las placas dicen en yiddish: Judíos de Radom, víctimas del hitlerismo bárbaro. En polaco: A los judíos de Radom, víctimas de los crímenes de Hitler." },
+      { tipo: "destacado", texto: "El monumento fue inaugurado el 8 de agosto de 1950, en el aniversario de la liquidación del Ghetto Grande. Las placas dicen en yiddish: Judíos de Radom, víctimas del hitlerismo bárbaro. En polaco: A los judíos de Radom, víctimas de los crímenes de Hitler." },
       { tipo: "normal", texto: "Para 1948 prácticamente no quedaban judíos en Radom. La comunidad judía de la ciudad, que en 1939 tenía 30.000 personas, dejó de existir." },
     ]
   },
   {
-    id: 5, tipo: "familia",
+    id: 7, tipo: "familia",
     nombre: "La casa de tu mamá",
     direccion: "Mireckiego 8/10",
     lat: 51.4068, lng: 21.1416,
@@ -153,7 +176,7 @@ const PARADAS = [
   }
 ];
 
-const map = L.map('map', { center: [51.4035, 21.1438], zoom: 16, zoomControl: false });
+const map = L.map('map', { center: [51.4025, 21.1435], zoom: 16, zoomControl: false });
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '© OpenStreetMap' }).addTo(map);
 
 PARADAS.forEach(p => {
