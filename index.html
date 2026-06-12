@@ -29,6 +29,7 @@
   .marker-label { margin-top: 5px; background: rgba(17,17,17,0.88); color: var(--text); font-size: 13px; font-weight: 600; padding: 3px 8px; border-radius: 4px; white-space: nowrap; letter-spacing: 0.02em; }
   .marker-label.familia { color: #7EB3D8; font-weight: 600; }
   #panel { position: fixed; bottom: 0; left: 0; right: 0; z-index: 2000; background: var(--surface); border-top: 1px solid var(--border); border-radius: 18px 18px 0 0; transform: translateY(100%); transition: transform 0.32s cubic-bezier(0.4,0,0.2,1); max-height: 82vh; display: flex; flex-direction: column; }
+  #panel.peek { transform: translateY(calc(100% - 90px)); }
   #panel.open { transform: translateY(0); }
   #panel-handle { width: 36px; height: 4px; background: var(--border); border-radius: 2px; margin: 12px auto 0; flex-shrink: 0; }
   #panel-header { padding: 14px 20px 12px; border-bottom: 1px solid var(--border); flex-shrink: 0; display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
@@ -36,8 +37,8 @@
   #panel-number.familia-color { color: #7EB3D8; }
   #panel-title { font-family: var(--font-serif); font-size: 20px; color: var(--text); line-height: 1.25; }
   #panel-address { font-size: 12px; color: var(--text-dim); margin-top: 4px; letter-spacing: 0.02em; }
-  #panel-close { background: var(--surface2); border: none; color: var(--text-dim); width: 30px; height: 30px; border-radius: 50%; font-size: 18px; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 2px; }
-  #panel-body { overflow-y: auto; padding: 20px 20px 40px; flex: 1; -webkit-overflow-scrolling: touch; }
+
+  #panel-body { overflow-y: auto; padding: 20px 20px 40px; flex: 1; -webkit-overflow-scrolling: touch; display: none; }
   #panel-body p { font-family: var(--font-serif); font-size: 19px; line-height: 1.65; color: var(--text); margin-bottom: 20px; }
   #panel-body p.destacado { background: var(--surface2); border-left: 3px solid var(--red); padding: 12px 14px; font-size: 17px; line-height: 1.5; margin-bottom: 20px; }
   #panel-body p.destacado.familia-border { border-color: #7EB3D8; }
@@ -83,7 +84,8 @@
       <div id="panel-title"></div>
       <div id="panel-address"></div>
     </div>
-    <button id="panel-close" onclick="closePanel()">×</button>
+    <button id="panel-expand" onclick="expandPanel()" style="background:var(--surface2);border:none;color:var(--text-dim);padding:6px 12px;border-radius:6px;font-size:12px;cursor:pointer;flex-shrink:0;margin-top:2px;">Ver más ↑</button>
+    <button id="panel-close" onclick="closePanel()" style="background:var(--surface2);border:none;color:var(--text-dim);width:30px;height:30px;border-radius:50%;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;">×</button>
   </div>
   <div id="panel-body"></div>
 </div>
@@ -353,13 +355,29 @@ function openPanel(parada) {
   });
 
   body.scrollTop = 0;
-  document.getElementById('panel').classList.add('open');
-  document.getElementById('overlay').classList.add('show');
+  const panel = document.getElementById('panel');
+  panel.classList.remove('open');
+  panel.classList.add('peek');
+  document.getElementById('panel-body').style.display = 'none';
+  document.getElementById('panel-expand').style.display = 'inline-block';
+  document.getElementById('overlay').classList.remove('show');
 
 }
 
+function expandPanel() {
+  const panel = document.getElementById('panel');
+  panel.classList.remove('peek');
+  panel.classList.add('open');
+  document.getElementById('panel-body').style.display = 'block';
+  document.getElementById('panel-expand').style.display = 'none';
+  document.getElementById('overlay').classList.add('show');
+}
+
 function closePanel() {
-  document.getElementById('panel').classList.remove('open');
+  const panel = document.getElementById('panel');
+  panel.classList.remove('open');
+  panel.classList.remove('peek');
+  document.getElementById('panel-body').style.display = 'none';
   document.getElementById('overlay').classList.remove('show');
   document.querySelectorAll('.stop-chip').forEach(c => c.classList.remove('active'));
   map.flyTo([51.4015, 21.1435], 15, { animate: true, duration: 0.8 });
@@ -368,7 +386,16 @@ function closePanel() {
 document.getElementById('overlay').addEventListener('click', closePanel);
 let startY = 0;
 document.getElementById('panel').addEventListener('touchstart', e => { startY = e.touches[0].clientY; });
-document.getElementById('panel').addEventListener('touchend', e => { if (e.changedTouches[0].clientY - startY > 60) closePanel(); });
+document.getElementById('panel').addEventListener('touchend', e => {
+  const dy = e.changedTouches[0].clientY - startY;
+  const panel = document.getElementById('panel');
+  if (dy > 60) {
+    if (panel.classList.contains('open')) { closePanel(); }
+    else if (panel.classList.contains('peek')) { closePanel(); }
+  } else if (dy < -40) {
+    if (panel.classList.contains('peek')) { expandPanel(); }
+  }
+});
 </script>
 </body>
 </html>
