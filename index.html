@@ -53,8 +53,6 @@
   .legend-dot { width: 12px; height: 12px; border-radius: 50%; border: 1.5px solid; flex-shrink: 0; }
   .legend-dot.hist { background: var(--red); border-color: #F0EDE8; }
   .legend-dot.fam { background: #1A3A5C; border-color: #7EB3D8; }
-  .ghetto-tooltip { background: rgba(17,17,17,0.9); border: 1px solid #8B2020; color: #F0EDE8; font-size: 12px; padding: 4px 8px; border-radius: 4px; }
-  .ghetto-tooltip::before { display: none; }
 </style>
 </head>
 <body>
@@ -77,10 +75,6 @@
   <div id="panel-body"></div>
 </div>
 <div id="legend">
-  <div class="legend-item">
-    <svg width="20" height="10"><line x1="0" y1="5" x2="20" y2="5" stroke="#C0392B" stroke-width="2.5" stroke-dasharray="5,3"/></svg>
-    <span style="font-size:14px;color:#A09A93;letter-spacing:0.02em"> Perímetro del ghetto</span>
-  </div>
   <div class="legend-item"><div class="legend-dot hist"></div> Sitio histórico</div>
   <div class="legend-item"><div class="legend-dot fam"></div> Historia familiar</div>
 </div>
@@ -207,38 +201,9 @@ const PARADAS = [
   }
 ]
 
-const GHETTO_PERIMETER = [
-  [51.4024, 21.1469],
-  [51.4022, 21.1475],
-  [51.4015, 21.1480],
-  [51.4005, 21.1478],
-  [51.3998, 21.1470],
-  [51.3995, 21.1455],
-  [51.3993, 21.1440],
-  [51.3995, 21.1420],
-  [51.4000, 21.1405],
-  [51.4010, 21.1395],
-  [51.4020, 21.1393],
-  [51.4032, 21.1400],
-  [51.4038, 21.1410],
-  [51.4040, 21.1425],
-  [51.4038, 21.1440],
-  [51.4033, 21.1455],
-  [51.4024, 21.1469],
-];
-
 const map = L.map('map', { center: [51.4025, 21.1440], zoom: 16, zoomControl: false });
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '© OpenStreetMap' }).addTo(map);
 
-// Ghetto perimeter
-L.polygon(GHETTO_PERIMETER, {
-  color: '#C0392B',
-  weight: 2.5,
-  opacity: 0.85,
-  fillColor: '#8B2020',
-  fillOpacity: 0.12,
-  dashArray: '6, 4'
-}).addTo(map).bindTooltip('Perímetro del Ghetto Grande (1941–1942)', { sticky: true, className: 'ghetto-tooltip' });
 
 PARADAS.forEach(p => {
   const esFamilia = p.tipo === 'familia';
