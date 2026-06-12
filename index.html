@@ -24,10 +24,10 @@
   .leaflet-control-zoom { display: none; }
   .leaflet-control-attribution { font-size: 9px; opacity: 0.3; }
   .marker-wrap { display: flex; flex-direction: column; align-items: center; cursor: pointer; }
-  .marker-bubble { width: 38px; height: 38px; border-radius: 50%; background: var(--red); border: 2px solid #F0EDE8; display: flex; align-items: center; justify-content: center; font-family: var(--font-ui); font-size: 15px; font-weight: 700; color: #F0EDE8; box-shadow: 0 2px 8px rgba(0,0,0,0.7); }
+  .marker-bubble { width: 48px; height: 48px; border-radius: 50%; background: var(--red); border: 2.5px solid #F0EDE8; display: flex; align-items: center; justify-content: center; font-family: var(--font-ui); font-size: 20px; font-weight: 700; color: #F0EDE8; box-shadow: 0 2px 10px rgba(0,0,0,0.8); }
   .marker-bubble.familia { background: #1A3A5C; border-color: #7EB3D8; }
-  .marker-label { margin-top: 4px; background: rgba(17,17,17,0.85); color: var(--text-dim); font-size: 10px; padding: 2px 6px; border-radius: 3px; white-space: nowrap; letter-spacing: 0.03em; }
-  .marker-label.familia { color: #7EB3D8; }
+  .marker-label { margin-top: 5px; background: rgba(17,17,17,0.88); color: var(--text); font-size: 13px; font-weight: 600; padding: 3px 8px; border-radius: 4px; white-space: nowrap; letter-spacing: 0.02em; }
+  .marker-label.familia { color: #7EB3D8; font-weight: 600; }
   #panel { position: fixed; bottom: 0; left: 0; right: 0; z-index: 2000; background: var(--surface); border-top: 1px solid var(--border); border-radius: 18px 18px 0 0; transform: translateY(100%); transition: transform 0.32s cubic-bezier(0.4,0,0.2,1); max-height: 82vh; display: flex; flex-direction: column; }
   #panel.open { transform: translateY(0); }
   #panel-handle { width: 36px; height: 4px; background: var(--border); border-radius: 2px; margin: 12px auto 0; flex-shrink: 0; }
@@ -49,7 +49,7 @@
   #overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 1500; }
   #overlay.show { display: block; }
   #legend { position: fixed; bottom: 20px; left: 16px; z-index: 900; display: flex; flex-direction: column; gap: 6px; }
-  .legend-item { display: flex; align-items: center; gap: 7px; font-size: 11px; color: var(--text-dim); letter-spacing: 0.03em; }
+  .legend-item { display: flex; align-items: center; gap: 8px; font-size: 14px; color: var(--text-dim); letter-spacing: 0.02em; }
   .legend-dot { width: 12px; height: 12px; border-radius: 50%; border: 1.5px solid; flex-shrink: 0; }
   .legend-dot.hist { background: var(--red); border-color: #F0EDE8; }
   .legend-dot.fam { background: #1A3A5C; border-color: #7EB3D8; }
@@ -79,10 +79,10 @@
 <div id="legend">
   <div class="legend-item">
     <svg width="20" height="10"><line x1="0" y1="5" x2="20" y2="5" stroke="#C0392B" stroke-width="2.5" stroke-dasharray="5,3"/></svg>
-    <span style="font-size:11px;color:#A09A93;letter-spacing:0.03em"> Perímetro del ghetto</span>
+    <span style="font-size:14px;color:#A09A93;letter-spacing:0.02em"> Perímetro del ghetto</span>
   </div>
   <div class="legend-item"><div class="legend-dot hist"></div> Sitio histórico</div>
-  <div class="legend-item"><div class="legend-dot fam"></div> Casa de familia</div>
+  <div class="legend-item"><div class="legend-dot fam"></div> Historia familiar</div>
 </div>
 <script>
 const BASE = 'https://alehaberruaj.github.io/radom2026/fotos/';
@@ -243,7 +243,7 @@ L.polygon(GHETTO_PERIMETER, {
 PARADAS.forEach(p => {
   const esFamilia = p.tipo === 'familia';
   const html = `<div class="marker-wrap"><div class="marker-bubble ${esFamilia ? 'familia' : ''}">${p.id}</div><div class="marker-label ${esFamilia ? 'familia' : ''}">${p.nombre.split('—')[0].trim()}</div></div>`;
-  const icon = L.divIcon({ html, className: '', iconSize: [120, 60], iconAnchor: [60, 19] });
+  const icon = L.divIcon({ html, className: '', iconSize: [140, 70], iconAnchor: [70, 24] });
   L.marker([p.lat, p.lng], { icon }).addTo(map).on('click', () => openPanel(p));
 });
 
