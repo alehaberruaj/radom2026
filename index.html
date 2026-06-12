@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Radom — Recorrido por la memoria</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #111111;
+    --surface: #1C1C1C;
+    --surface2: #252525;
+    --text: #F0EDE8;
+    --text-dim: #A09A93;
+    --red: #8B2020;
+    --red-light: #C0392B;
+    --border: #2E2E2E;
+    --font-serif: Georgia, 'Times New Roman', serif;
+    --font-ui: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  }
+
+  html, body {
+    height: 100%;
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-ui);
+    overflow: hidden;
+  }
+
+  /* HEADER */
+  #header {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 1000;
+    background: var(--bg);
+    border-bottom: 1px solid var(--border);
+    padding: 14px 18px 12px;
+  }
+  #header h1 {
+    font-family: var(--font-serif);
+    font-size: 18px;
+    font-weight: normal;
+    color: var(--text);
+    letter-spacing: 0.02em;
+  }
+  #header p {
+    font-size: 12px;
+    color: var(--text-dim);
+    margin-top: 2px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  /* MAP */
+  #map {
+    position: fixed;
+    top: 65px;
+    left: 0; right: 0;
+    bottom: 0;
+    z-index: 1;
+  }
+
+  /* LEAFLET OVERRIDES */
+  .leaflet-tile-pane { filter: grayscale(100%) brightness(0.35) contrast(1.1); }
+  .leaflet-control-zoom { display: none; }
+  .leaflet-control-attribution { font-size: 9px; opacity: 0.3; }
+
+  /* CUSTOM MARKERS */
+  .marker-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+  }
+  .marker-bubble {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: var(--red);
+    border: 2px solid #F0EDE8;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-ui);
+    font-size: 15px;
+    font-weight: 700;
+    color: #F0EDE8;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.7);
+  }
+  .marker-bubble.familia {
+    background: #1A3A5C;
+    border-color: #7EB3D8;
+  }
+  .marker-label {
+    margin-top: 4px;
+    background: rgba(17,17,17,0.85);
+    color: var(--text-dim);
+    font-size: 10px;
+    padding: 2px 6px;
+    border-radius: 3px;
+    white-space: nowrap;
+    letter-spacing: 0.03em;
+  }
+  .marker-label.familia {
+    color: #7EB3D8;
+  }
+
+  /* BOTTOM PANEL */
+  #panel {
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    z-index: 2000;
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    border-radius: 18px 18px 0 0;
+    transform: translateY(100%);
+    transition: transform 0.32s cubic-bezier(0.4, 0, 0.2, 1);
+    max-height: 82vh;
+    display: flex;
+    flex-direction: column;
+  }
+  #panel.open { transform: translateY(0); }
+
+  #panel-handle {
+    width: 36px;
+    height: 4px;
+    background: var(--border);
+    border-radius: 2px;
+    margin: 12px auto 0;
+    flex-shrink: 0;
+  }
+
+  #panel-header {
+    padding: 14px 20px 12px;
+    border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+  }
+  #panel-number {
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--red-light);
+    margin-bottom: 4px;
+  }
+  #panel-number.familia-color { color: #7EB3D8; }
+  #panel-title {
+    font-family: var(--font-serif);
+    font-size: 20px;
+    color: var(--text);
+    line-height: 1.25;
+  }
+  #panel-address {
+    font-size: 12px;
+    color: var(--text-dim);
+    margin-top: 4px;
+    letter-spacing: 0.02em;
+  }
+  #panel-close {
+    background: var(--surface2);
+    border: none;
+    color: var(--text-dim);
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    font-size: 18px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  #panel-body {
+    overflow-y: auto;
+    padding: 20px 20px 40px;
+    flex: 1;
+    -webkit-overflow-scrolling: touch;
+  }
+  #panel-body p {
+    font-family: var(--font-serif);
+    font-size: 19px;
+    line-height: 1.65;
+    color: var(--text);
+    margin-bottom: 20px;
+  }
+  #panel-body p.destacado {
+    color: #F0EDE8;
+    border-left: 3px solid var(--red);
+    padding-left: 14px;
+    font-style: italic;
+  }
+  #panel-body p.destacado.familia-border {
+    border-color: #7EB3D8;
+  }
+
+  /* OVERLAY */
+  #overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+    z-index: 1500;
+  }
+  #overlay.show { display: block; }
+
+  /* LEGEND */
+  #legend {
+    position: fixed;
+    bottom: 20px;
+    left: 16px;
+    z-index: 900;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 11px;
+    color: var(--text-dim);
+    letter-spacing: 0.03em;
+  }
+  .legend-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    border: 1.5px solid;
+    flex-shrink: 0;
+  }
+  .legend-dot.hist { background: var(--red); border-color: #F0EDE8; }
+  .legend-dot.fam { background: #1A3A5C; border-color: #7EB3D8; }
+</style>
+</head>
+<body>
+
+<div id="header">
+  <h1>Radom — Recorrido por la memoria</h1>
+  <p>Tocá cada parada para leer su historia</p>
+</div>
+
+<div id="map"></div>
+<div id="overlay"></div>
+
+<div id="panel">
+  <div id="panel-handle"></div>
+  <div id="panel-header">
+    <div>
+      <div id="panel-number"></div>
+      <div id="panel-title"></div>
+      <div id="panel-address"></div>
+    </div>
+    <button id="panel-close" onclick="closePanel()">×</button>
+  </div>
+  <div id="panel-body"></div>
+</div>
+
+<div id="legend">
+  <div class="legend-item"><div class="legend-dot hist"></div> Sitio histórico</div>
+  <div class="legend-item"><div class="legend-dot fam"></div> Casa de familia</div>
+</div>
+
+<script>
+const PARADAS = [
+  {
+    id: 1,
+    tipo: "historico",
+    nombre: "La entrada al ghetto",
+    direccion: "Wałowa & Żeromskiego",
+    lat: 51.4024,
+    lng: 21.1469,
+    contenido: [
+      { tipo: "normal", texto: "Pararse en esta esquina y mirar hacia adentro." },
+      { tipo: "normal", texto: "Acá estaba el frente del Ghetto Grande. En abril de 1941, los alemanes ordenaron a todos los judíos de Radom concentrarse en esta zona en diez días. Tenían que dejar sus casas, sus negocios, todo, y venir a vivir acá adentro, hacinados." },
+      { tipo: "normal", texto: "El ghetto de Radom no tenía muros como el de Varsovia. Los límites los formaban los propios edificios. Había 13 portones custodiados por policía judía y polaca. En cada uno, un cartel grande: Peligro — Enfermedades contagiosas — Prohibida la entrada." },
+      { tipo: "destacado", texto: "Los edificios que están acá son los mismos de 1941. Las calles son las mismas. Solo falta la gente." },
+    ]
+  },
+  {
+    id: 2,
+    tipo: "familia",
+    nombre: "Wałowa — el corazón del barrio judío",
+    direccion: "Wałowa 1 (entrar al patio interior) · Wałowa 11a",
+    lat: 51.4016,
+    lng: 21.1433,
+    contenido: [
+      { tipo: "normal", texto: "Esta calle era el centro de la vida judía de Radom. Acá estaban las tiendas, los shtiebels, la mikve, las panaderías, las librerías. Los viernes antes del Shabat era ruidosa y llena de gente. Los sábados, silencio total: negocios cerrados, familias yendo a la sinagoga." },
+      { tipo: "normal", texto: "En el patio interior del número 1 hay un cartel pintado en la pared, en yiddish. Es el aviso del hotel kosher de Abram Mentlik, del período de entreguerras. Sobrevivió la guerra, el comunismo, ochenta años. Es uno de los pocos rastros físicos de esa vida que quedan." },
+      { tipo: "destacado", texto: "En el número 11a vivían tu abuelo Lejbus Mekler, su esposa Miriam Basia Mekler Kiman, y los hijos de ellos — tus medios hermanos." },
+      { tipo: "normal", texto: "Lejbus se escapó antes de que se formara el ghetto. Miriam Basia y los hijos se quedaron. En agosto de 1942, cuando los alemanes liquidaron el ghetto, lo más probable es que hayan sido deportados desde esta misma calle a Treblinka." },
+      { tipo: "normal", texto: "Durante tres noches — del 16 al 18 de agosto de 1942 — los alemanes rodearon el ghetto con tropas de las SS, la Gestapo y gendarmes. A medianoche empezaron a sacar a la gente de los edificios, casa por casa, piso por piso." },
+      { tipo: "normal", texto: "A los que resistían los mataban en el lugar. Los demás eran empujados a formarse en columnas en esta calle y en la plaza del mercado. 25.000 personas esperaron acá, con lo que podían cargar, sin saber adónde iban." },
+      { tipo: "destacado", texto: "Después los llevaron a pie hasta un desvío ferroviario, los subieron a vagones de ganado, y los llevaron a Treblinka. El suelo donde estás parado es ese suelo." },
+    ]
+  },
+  {
+    id: 3,
+    tipo: "familia",
+    nombre: "Los que quedaron",
+    direccion: "Szwarlikowska",
+    lat: 51.4039,
+    lng: 21.1426,
+    contenido: [
+      { tipo: "normal", texto: "Después de las tres noches de agosto, el ghetto que había tenido 27.000 personas quedó reducido a esto: una sola manzana, un solo portón, un cartel que decía Zwangs-Arbeits-Lager — Campo de Trabajo Forzado." },
+      { tipo: "normal", texto: "Los alemanes habían separado a unos 2.000 judíos que todavía eran útiles como mano de obra. Los encerraron acá." },
+      { tipo: "destacado", texto: "Tu mamá Jacheta Wajsbort era una de ellas. Había vivido en Mireckiego 8/10, a pocas cuadras de acá, con su mamá y unos primos. Sobrevivió la liquidación. Quedó encerrada en esta calle mientras el resto de su comunidad era llevado a los vagones." },
+      { tipo: "normal", texto: "Pensar en eso: lo que significa haber quedado del otro lado de ese portón." },
+    ]
+  },
+  {
+    id: 4,
+    tipo: "historico",
+    nombre: "El monumento — sitio de la Gran Sinagoga",
+    direccion: "Bóżniczna 3",
+    lat: 51.401,
+    lng: 21.1431,
+    contenido: [
+      { tipo: "normal", texto: "Acá estuvo la Gran Sinagoga de Radom. Los nazis la quemaron en 1939, apenas ocuparon la ciudad. Después del incendio demolieron las ruinas." },
+      { tipo: "normal", texto: "En 1947, los pocos sobrevivientes que quedaban en Radom juntaron fondos para construir un monumento. Lo inauguraron el 8 de agosto de 1950 — el aniversario exacto de la liquidación del ghetto." },
+      { tipo: "destacado", texto: "El escultor era un sobreviviente local. Usó como material restos de la propia sinagoga y lápidas del cementerio judío que los nazis habían destruido. El monumento está literalmente hecho con los escombros de lo que destruyeron." },
+      { tipo: "normal", texto: "Tiene una figura femenina mirando hacia arriba con el puño cerrado. Las placas dicen en yiddish: Judíos de Radom, víctimas del hitlerismo bárbaro. En polaco: A los judíos de Radom, víctimas de los crímenes de Hitler." },
+      { tipo: "normal", texto: "Después de poner el monumento, los que quedaban se fueron. Ya no había más comunidad judía en Radom. Este fue uno de sus últimos actos colectivos." },
+    ]
+  },
+  {
+    id: 5,
+    tipo: "familia",
+    nombre: "La casa de tu mamá",
+    direccion: "Mireckiego 8/10",
+    lat: 51.4068,
+    lng: 21.1416,
+    contenido: [
+      { tipo: "destacado", texto: "Acá vivía tu mamá Jacheta Wajsbort." },
+      { tipo: "normal", texto: "Vivía acá con su mamá y unos primos. Esta calle estaba dentro del perímetro del Ghetto Grande — cuando sellaron el ghetto en abril de 1941, Jacheta ya estaba adentro." },
+      { tipo: "normal", texto: "Pararse frente al edificio. Mirar la fachada. Ella la veía todos los días." },
+      { tipo: "destacado", texto: "De acá sobrevivió." },
+    ]
+  }
+];
+
+// MAP INIT
+const map = L.map('map', {
+  center: [51.4035, 21.1438],
+  zoom: 16,
+  zoomControl: false,
+  attributionControl: true
+});
+
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  attribution: '© OpenStreetMap'
+}).addTo(map);
+
+// ADD MARKERS
+PARADAS.forEach(p => {
+  const esFamilia = p.tipo === 'familia';
+  const html = `
+    <div class="marker-wrap">
+      <div class="marker-bubble ${esFamilia ? 'familia' : ''}">${p.id}</div>
+      <div class="marker-label ${esFamilia ? 'familia' : ''}">${p.nombre.split('—')[0].trim()}</div>
+    </div>`;
+
+  const icon = L.divIcon({
+    html,
+    className: '',
+    iconSize: [120, 60],
+    iconAnchor: [60, 19]
+  });
+
+  L.marker([p.lat, p.lng], { icon })
+    .addTo(map)
+    .on('click', () => openPanel(p));
+});
+
+// PANEL
+function openPanel(parada) {
+  const esFamilia = parada.tipo === 'familia';
+
+  document.getElementById('panel-number').textContent = `PARADA ${parada.id}`;
+  document.getElementById('panel-number').className = esFamilia ? 'familia-color' : '';
+  document.getElementById('panel-title').textContent = parada.nombre;
+  document.getElementById('panel-address').textContent = parada.direccion;
+
+  const body = document.getElementById('panel-body');
+  body.innerHTML = '';
+  parada.contenido.forEach(bloque => {
+    const el = document.createElement('p');
+    el.textContent = bloque.texto;
+    if (bloque.tipo === 'destacado') {
+      el.className = esFamilia ? 'destacado familia-border' : 'destacado';
+    }
+    body.appendChild(el);
+  });
+  body.scrollTop = 0;
+
+  document.getElementById('panel').classList.add('open');
+  document.getElementById('overlay').classList.add('show');
+
+  // center map on marker with offset
+  map.panTo([parada.lat, parada.lng], { animate: true });
+}
+
+function closePanel() {
+  document.getElementById('panel').classList.remove('open');
+  document.getElementById('overlay').classList.remove('show');
+}
+
+document.getElementById('overlay').addEventListener('click', closePanel);
+
+// swipe down to close
+let startY = 0;
+document.getElementById('panel').addEventListener('touchstart', e => {
+  startY = e.touches[0].clientY;
+});
+document.getElementById('panel').addEventListener('touchend', e => {
+  const dy = e.changedTouches[0].clientY - startY;
+  if (dy > 60) closePanel();
+});
+</script>
+</body>
+</html>
