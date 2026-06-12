@@ -19,7 +19,7 @@
   #header { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; background: var(--bg); border-bottom: 1px solid var(--border); padding: 14px 18px 12px; }
   #header h1 { font-family: var(--font-serif); font-size: 18px; font-weight: normal; color: var(--text); letter-spacing: 0.02em; }
   #header p { font-size: 12px; color: var(--text-dim); margin-top: 2px; letter-spacing: 0.05em; text-transform: uppercase; }
-  #map { position: fixed; top: 65px; left: 0; right: 0; bottom: 0; z-index: 1; }
+  #map { position: fixed; top: 120px; left: 0; right: 0; bottom: 0; z-index: 1; }
   .leaflet-tile-pane { filter: grayscale(100%) brightness(0.35) contrast(1.1); }
   .leaflet-control-zoom { display: none; }
   .leaflet-control-attribution { font-size: 9px; opacity: 0.3; }
@@ -46,6 +46,18 @@
   .foto-caption { font-family: var(--font-ui); font-size: 12px; color: var(--text-dim); margin-top: 6px; letter-spacing: 0.03em; line-height: 1.4; font-style: italic; }
   .maps-btn { display: flex; align-items: center; gap: 8px; background: #1A3356; color: #7EB3D8; border: 1px solid #2A4A7A; border-radius: 8px; padding: 12px 16px; font-family: var(--font-ui); font-size: 15px; text-decoration: none; margin-bottom: 24px; }
   .maps-btn svg { flex-shrink: 0; }
+  /* STOPS LIST */
+  #stops-list { position: fixed; top: 65px; left: 0; right: 0; z-index: 500; background: var(--bg); border-bottom: 1px solid var(--border); display: flex; overflow-x: auto; padding: 8px 12px; gap: 8px; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+  #stops-list::-webkit-scrollbar { display: none; }
+  .stop-chip { flex-shrink: 0; display: flex; align-items: center; gap: 6px; padding: 7px 12px; border-radius: 20px; background: var(--surface); border: 1px solid var(--border); cursor: pointer; transition: all 0.15s; }
+  .stop-chip:active { opacity: 0.7; }
+  .stop-chip.active { border-color: var(--red-light); background: #2A1010; }
+  .stop-chip.active.familia-chip { border-color: #7EB3D8; background: #0E1E2E; }
+  .chip-num { width: 22px; height: 22px; border-radius: 50%; background: var(--red); display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; color: #fff; flex-shrink: 0; }
+  .chip-num.familia { background: #1A3A5C; }
+  .chip-name { font-size: 13px; color: var(--text-dim); white-space: nowrap; }
+  .stop-chip.active .chip-name { color: var(--text); }
+
   #overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 1500; }
   #overlay.show { display: block; }
   #legend { position: fixed; bottom: 20px; left: 16px; z-index: 900; display: flex; flex-direction: column; gap: 6px; }
@@ -60,6 +72,7 @@
   <h1>Radom — Recorrido por la memoria</h1>
   <p>Tocá cada parada para leer su historia</p>
 </div>
+<div id="stops-list"></div>
 <div id="map"></div>
 <div id="overlay"></div>
 <div id="panel">
@@ -245,7 +258,7 @@ const PARADAS = [
   }
 ]
 
-const map = L.map('map', { center: [51.4025, 21.1440], zoom: 16, zoomControl: false });
+const map = L.map('map', { center: [51.4015, 21.1435], zoom: 15, zoomControl: false });
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '© OpenStreetMap' }).addTo(map);
 
 L.polygon(GHETTO_PERIMETER, {
@@ -265,7 +278,34 @@ PARADAS.forEach(p => {
   L.marker([p.lat, p.lng], { icon }).addTo(map).on('click', () => openPanel(p));
 });
 
+// Build stops list
+function buildStopsList() {
+  const list = document.getElementById('stops-list');
+  PARADAS.forEach(p => {
+    const esFamilia = p.tipo === 'familia';
+    const chip = document.createElement('div');
+    chip.className = 'stop-chip' + (esFamilia ? ' familia-chip' : '');
+    chip.id = 'chip-' + p.id;
+    chip.innerHTML = `
+      <div class="chip-num ${esFamilia ? 'familia' : ''}">${p.id}</div>
+      <span class="chip-name">${p.nombre.split('—')[0].trim()}</span>`;
+    chip.onclick = () => openPanel(p);
+    list.appendChild(chip);
+  });
+}
+buildStopsList();
+
 function openPanel(parada) {
+  // Zoom in to the stop
+  map.flyTo([parada.lat, parada.lng], 18, { animate: true, duration: 0.8 });
+
+  // Highlight chip
+  document.querySelectorAll('.stop-chip').forEach(c => c.classList.remove('active'));
+  const chip = document.getElementById('chip-' + parada.id);
+  if (chip) {
+    chip.classList.add('active');
+    chip.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+  }
   const esFamilia = parada.tipo === 'familia';
   document.getElementById('panel-number').textContent = `PARADA ${parada.id}`;
   document.getElementById('panel-number').className = esFamilia ? 'familia-color' : '';
@@ -315,12 +355,14 @@ function openPanel(parada) {
   body.scrollTop = 0;
   document.getElementById('panel').classList.add('open');
   document.getElementById('overlay').classList.add('show');
-  map.panTo([parada.lat, parada.lng], { animate: true });
+
 }
 
 function closePanel() {
   document.getElementById('panel').classList.remove('open');
   document.getElementById('overlay').classList.remove('show');
+  document.querySelectorAll('.stop-chip').forEach(c => c.classList.remove('active'));
+  map.flyTo([51.4015, 21.1435], 15, { animate: true, duration: 0.8 });
 }
 
 document.getElementById('overlay').addEventListener('click', closePanel);
