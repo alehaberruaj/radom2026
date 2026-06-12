@@ -75,15 +75,61 @@
   <div id="panel-body"></div>
 </div>
 <div id="legend">
+  <div class="legend-item" style="gap:8px;display:flex;align-items:center;">
+    <svg width="22" height="10"><line x1="0" y1="5" x2="22" y2="5" stroke="#C0392B" stroke-width="2.5" stroke-dasharray="5,3"/></svg>
+    <span style="font-size:14px;color:#A09A93"> Perímetro del ghetto</span>
+  </div>
   <div class="legend-item"><div class="legend-dot hist"></div> Sitio histórico</div>
   <div class="legend-item"><div class="legend-dot fam"></div> Historia familiar</div>
 </div>
 <script>
 const BASE = 'https://alehaberruaj.github.io/radom2026/fotos/';
 
+const GHETTO_PERIMETER = [
+  [51.4041, 21.1425],
+  [51.4041, 21.1432],
+  [51.4038, 21.1440],
+  [51.4035, 21.1448],
+  [51.4032, 21.1455],
+  [51.4028, 21.1458],
+  [51.4022, 21.1462],
+  [51.4017, 21.1462],
+  [51.4012, 21.1458],
+  [51.4007, 21.1452],
+  [51.4003, 21.1448],
+  [51.3998, 21.1448],
+  [51.3994, 21.1444],
+  [51.3991, 21.1435],
+  [51.3991, 21.1422],
+  [51.3993, 21.1410],
+  [51.3997, 21.1400],
+  [51.4003, 21.1393],
+  [51.4010, 21.1390],
+  [51.4018, 21.1393],
+  [51.4025, 21.1397],
+  [51.4030, 21.1403],
+  [51.4035, 21.1410],
+  [51.4038, 21.1418],
+  [51.4041, 21.1425],
+];
+
 const PARADAS = [
   {
     id: 1, tipo: "historico",
+    nombre: "Sede de la Comunidad Judía",
+    direccion: "Żeromskiego 9 — segundo piso",
+    lat: 51.4024648, lng: 21.1486601,
+    maps: "https://www.google.com/maps?q=51.4024648,21.1486601",
+    fotos: [],
+    contenido: [
+      { tipo: "destacado", texto: "Antes de la guerra, Radom tenía una comunidad judía de unos 30.000 habitantes — aproximadamente el 30% de la población total de la ciudad. Llevaban siglos viviendo en esta zona." },
+      { tipo: "normal", texto: "En el período de entreguerras, la sede oficial de la Comunidad Religiosa Judía (Gmina Wyznaniowa Żydowska) funcionaba en el segundo piso de este edificio clásico en Żeromskiego 9. Desde acá se administraban los servicios comunitarios: el registro civil, la asistencia social, las instituciones educativas y las relaciones con las autoridades polacas." },
+      { tipo: "normal", texto: "La comunidad judía de Radom tenía una vida institucional activa: sinagogas, escuelas en yiddish y en hebreo, bibliotecas, organizaciones deportivas y culturales, partidos políticos propios — desde el Bund socialista hasta los distintos movimientos sionistas. Los judíos participaban también en el Concejo Municipal de la ciudad." },
+      { tipo: "normal", texto: "Todo eso dejó de existir entre 1939 y 1942. Este edificio todavía está en pie. El segundo piso donde funcionaba la sede comunitaria sigue siendo el mismo." },
+    ]
+  },
+  {
+    id: 2, tipo: "historico",
     nombre: "La entrada al ghetto",
     direccion: "Wałowa & Żeromskiego",
     lat: 51.4017239, lng: 21.1461303,
@@ -100,7 +146,7 @@ const PARADAS = [
     ]
   },
   {
-    id: 2, tipo: "historico",
+    id: 3, tipo: "historico",
     nombre: "El cartel de Mentlik",
     direccion: "Wałowa 1 — patio interior",
     lat: 51.4018567, lng: 21.1463298,
@@ -117,7 +163,7 @@ const PARADAS = [
     ]
   },
   {
-    id: 3, tipo: "historico",
+    id: 4, tipo: "historico",
     nombre: "Wałowa — la calle principal del ghetto",
     direccion: "Wałowa",
     lat: 51.40149639414829, lng: 21.144857128643118,
@@ -131,7 +177,7 @@ const PARADAS = [
     ]
   },
   {
-    id: 4, tipo: "familia",
+    id: 5, tipo: "familia",
     nombre: "La casa de Miriam Basia y los hijos",
     direccion: "Wałowa 11a — hoy es un estacionamiento",
     lat: 51.4014648, lng: 21.1443573,
@@ -144,7 +190,7 @@ const PARADAS = [
     ]
   },
   {
-    id: 5, tipo: "historico",
+    id: 6, tipo: "historico",
     nombre: "El monumento — sitio de la Gran Sinagoga",
     direccion: "Bóżniczna 3",
     lat: 51.40103171894414, lng: 21.14302886819349,
@@ -160,7 +206,7 @@ const PARADAS = [
     ]
   },
   {
-    id: 6, tipo: "historico",
+    id: 7, tipo: "historico",
     nombre: "El Rynek — punto de concentración",
     direccion: "Plaza del mercado — Rynek",
     lat: 51.40298348360912, lng: 21.142603645522602,
@@ -173,7 +219,7 @@ const PARADAS = [
     ]
   },
   {
-    id: 7, tipo: "familia",
+    id: 8, tipo: "familia",
     nombre: "La casa de tu mamá",
     direccion: "Mireckiego 8/10",
     lat: 51.4031845, lng: 21.1407444,
@@ -186,7 +232,7 @@ const PARADAS = [
     ]
   },
   {
-    id: 8, tipo: "familia",
+    id: 9, tipo: "familia",
     nombre: "Los que quedaron",
     direccion: "Szwarlikowska",
     lat: 51.4039, lng: 21.1426,
@@ -203,6 +249,15 @@ const PARADAS = [
 
 const map = L.map('map', { center: [51.4025, 21.1440], zoom: 16, zoomControl: false });
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '© OpenStreetMap' }).addTo(map);
+
+L.polygon(GHETTO_PERIMETER, {
+  color: '#C0392B',
+  weight: 2.5,
+  opacity: 0.85,
+  fillColor: '#8B2020',
+  fillOpacity: 0.10,
+  dashArray: '6, 4'
+}).addTo(map);
 
 
 PARADAS.forEach(p => {
