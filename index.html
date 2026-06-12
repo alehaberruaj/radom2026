@@ -74,13 +74,16 @@
 </head>
 <body>
 <div id="header">
-  <h1>Radom — Recorrido por la memoria</h1>
-  <p>Tocá cada parada para leer su historia</p>
+  <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;">
+    <h1>Radom — Recorrido por la memoria</h1>
+    <div id="weather-data" style="font-size:13px;color:var(--text-dim);white-space:nowrap;flex-shrink:0;">—</div>
+  </div>
+  <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:2px;">
+    <p>Tocá cada parada para leer su historia</p>
+    <div style="font-size:9px;color:#555;letter-spacing:0.05em;text-transform:uppercase;white-space:nowrap;">clima en Radom</div>
+  </div>
 </div>
-<div id="weather" style="position:fixed;top:10px;right:16px;z-index:1001;text-align:right;">
-  <div id="weather-label">El clima en Radom ahora</div>
-  <div id="weather-data">cargando...</div>
-</div>
+
 <div id="stops-list"></div>
 <div id="map"></div>
 <div id="overlay"></div>
