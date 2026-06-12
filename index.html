@@ -39,14 +39,11 @@
   #panel-close { background: var(--surface2); border: none; color: var(--text-dim); width: 30px; height: 30px; border-radius: 50%; font-size: 18px; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 2px; }
   #panel-body { overflow-y: auto; padding: 20px 20px 40px; flex: 1; -webkit-overflow-scrolling: touch; }
   #panel-body p { font-family: var(--font-serif); font-size: 19px; line-height: 1.65; color: var(--text); margin-bottom: 20px; }
-  #panel-body p.destacado { color: #F0EDE8; border-left: 3px solid var(--red); padding-left: 14px; font-style: italic; }
+  #panel-body p.destacado { background: var(--surface2); border-left: 3px solid var(--red); padding: 12px 14px; font-size: 17px; line-height: 1.5; }
   #panel-body p.destacado.familia-border { border-color: #7EB3D8; }
-  /* FOTOS */
   .foto-bloque { margin-bottom: 24px; }
   .foto-bloque img { width: 100%; display: block; border-radius: 6px; }
   .foto-caption { font-family: var(--font-ui); font-size: 12px; color: var(--text-dim); margin-top: 6px; letter-spacing: 0.03em; line-height: 1.4; font-style: italic; }
-  .foto-label { font-family: var(--font-ui); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--red-light); margin-bottom: 6px; }
-  .foto-label.ahora { color: var(--text-dim); }
   #overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 1500; }
   #overlay.show { display: block; }
   #legend { position: fixed; bottom: 20px; left: 16px; z-index: 900; display: flex; flex-direction: column; gap: 6px; }
@@ -89,29 +86,29 @@ const PARADAS = [
     direccion: "Wałowa & Żeromskiego",
     lat: 51.4024, lng: 21.1469,
     fotos: [
-      { src: BASE + 'foto_entrada_historica.jpg', caption: 'Plac Stare Miasto, dentro del Ghetto Grande. Los carros con caballos eran la forma en que las familias movían sus pertenencias al entrar al ghetto. Al fondo, la iglesia de la Santísima Trinidad, que sigue en pie hoy.' }
+      { src: BASE + 'foto_entrada_historica.jpg', caption: 'Plac Stare Miasto, dentro del Ghetto Grande, circa 1941. Al fondo, la iglesia de la Santísima Trinidad, que sigue en pie hoy.' }
     ],
     contenido: [
-      { tipo: "normal", texto: "Pararse en esta esquina y mirar hacia adentro." },
-      { tipo: "normal", texto: "Acá estaba el frente del Ghetto Grande. En abril de 1941, los alemanes ordenaron a todos los judíos de Radom concentrarse en esta zona en diez días. Tenían que dejar sus casas, sus negocios, todo, y venir a vivir acá adentro, hacinados." },
-      { tipo: "normal", texto: "El ghetto de Radom no tenía muros como el de Varsovia. Los límites los formaban los propios edificios. Había 13 portones custodiados por policía judía y polaca. En cada uno, un cartel grande: Peligro — Enfermedades contagiosas — Prohibida la entrada." },
-      { tipo: "destacado", texto: "Los edificios que están acá son los mismos de 1941. Las calles son las mismas. Solo falta la gente." },
+      { tipo: "destacado", texto: "Antes de la guerra, Radom tenía unos 30.000 habitantes judíos — aproximadamente el 30% de la población total de la ciudad." },
+      { tipo: "normal", texto: "El 8 de septiembre de 1939 las fuerzas alemanas ocuparon Radom. En marzo de 1941 el gobernador alemán emitió un decreto estableciendo dos ghettos separados. Los judíos tuvieron diez días para abandonar sus viviendas y trasladarse a las zonas designadas." },
+      { tipo: "normal", texto: "El Ghetto Grande se estableció en torno a la calle Wałowa y las calles adyacentes del centro. Albergó a unos 27.000 judíos. El Ghetto Chico se ubicó en el barrio periférico de Glinice, con unos 5.000 habitantes." },
+      { tipo: "normal", texto: "A diferencia del ghetto de Varsovia, el de Radom no tenía muros. Los límites estaban marcados por los propios edificios del perímetro. El ghetto tenía 13 portones custodiados por policía judía y polaca, con carteles que decían: Peligro — Enfermedades contagiosas — Prohibida la entrada." },
+      { tipo: "normal", texto: "Las condiciones dentro del ghetto eran de hacinamiento extremo. La ración alimentaria asignada por los alemanes era de 100 gramos de pan por persona por día. Las enfermedades se propagaban con rapidez, en particular el tifus." },
     ]
   },
   {
     id: 2, tipo: "familia",
-    nombre: "Wałowa — el corazón del barrio judío",
+    nombre: "Wałowa — centro del ghetto",
     direccion: "Wałowa 1 (entrar al patio interior) · Wałowa 11a",
     lat: 51.4016, lng: 21.1433,
     fotos: [],
     contenido: [
-      { tipo: "normal", texto: "Esta calle era el centro de la vida judía de Radom. Acá estaban las tiendas, los shtiebels, la mikve, las panaderías, las librerías. Los viernes antes del Shabat era ruidosa y llena de gente. Los sábados, silencio total: negocios cerrados, familias yendo a la sinagoga." },
-      { tipo: "normal", texto: "En el patio interior del número 1 hay un cartel pintado en la pared, en yiddish. Es el aviso del hotel kosher de Abram Mentlik, del período de entreguerras. Sobrevivió la guerra, el comunismo, ochenta años. Es uno de los pocos rastros físicos de esa vida que quedan." },
-      { tipo: "destacado", texto: "En el número 11a vivían tu abuelo Lejbus Mekler, su esposa Miriam Basia Mekler Kiman, y los hijos de ellos — tus medios hermanos." },
-      { tipo: "normal", texto: "Lejbus se escapó antes de que se formara el ghetto. Miriam Basia y los hijos se quedaron. En agosto de 1942, cuando los alemanes liquidaron el ghetto, lo más probable es que hayan sido deportados desde esta misma calle a Treblinka." },
-      { tipo: "normal", texto: "Durante tres noches — del 16 al 18 de agosto de 1942 — los alemanes rodearon el ghetto con tropas de las SS, la Gestapo y gendarmes. A medianoche empezaron a sacar a la gente de los edificios, casa por casa, piso por piso." },
-      { tipo: "normal", texto: "A los que resistían los mataban en el lugar. Los demás eran empujados a formarse en columnas en esta calle y en la plaza del mercado. 25.000 personas esperaron acá, con lo que podían cargar, sin saber adónde iban." },
-      { tipo: "destacado", texto: "Después los llevaron a pie hasta un desvío ferroviario, los subieron a vagones de ganado, y los llevaron a Treblinka. El suelo donde estás parado es ese suelo." },
+      { tipo: "normal", texto: "Wałowa era el eje central de la vida judía de Radom desde el siglo XVIII. Acá estaban concentradas las tiendas, los talleres, los shtiebels (pequeñas sinagogas), la mikve y los negocios de la comunidad. El Judenrat — el consejo judío obligado por los alemanes a administrar el ghetto — también tenía su sede en esta zona." },
+      { tipo: "normal", texto: "En el patio interior del número 1 se conserva un cartel pintado directamente sobre la pared en yiddish: es el aviso del hotel y restaurante kosher de Abram Mentlik, del período de entreguerras. Es uno de los pocos vestigios físicos de la vida comercial judía que sobrevivió en la ciudad." },
+      { tipo: "destacado", texto: "En el número 11a vivían Miriam Basia Mekler Kiman y sus hijos — tus medios hermanos. Tu papá Lejbus Mekler se escapó antes de que se formara el ghetto." },
+      { tipo: "normal", texto: "Durante la liquidación del Ghetto Grande, en agosto de 1942, los habitantes fueron concentrados en Wałowa y la plaza del mercado antes de ser deportados. Lo más probable es que Miriam Basia y los hijos hayan sido parte de esa deportación." },
+      { tipo: "normal", texto: "La liquidación del Ghetto Grande se ejecutó entre el 16 y el 18 de agosto de 1942. Unidades de las SS, la Gestapo, gendarmes alemanes y fuerzas auxiliares ucranianas rodearon el ghetto. Operaron de noche, con reflectores instalados en las esquinas. Sacaron a los habitantes edificio por edificio. Quienes resistían eran ejecutados en el lugar. Los demás fueron formados en columnas y llevados a pie hasta un desvío ferroviario junto a la fábrica Marwil, donde los subieron a vagones de carga con destino a Treblinka." },
+      { tipo: "normal", texto: "En tres noches fueron deportadas unas 25.000 personas. La casi totalidad fue asesinada en Treblinka." },
     ]
   },
   {
@@ -121,10 +118,10 @@ const PARADAS = [
     lat: 51.4039, lng: 21.1426,
     fotos: [],
     contenido: [
-      { tipo: "normal", texto: "Después de las tres noches de agosto, el ghetto que había tenido 27.000 personas quedó reducido a esto: una sola manzana, un solo portón, un cartel que decía Zwangs-Arbeits-Lager — Campo de Trabajo Forzado." },
-      { tipo: "normal", texto: "Los alemanes habían separado a unos 2.000 judíos que todavía eran útiles como mano de obra. Los encerraron acá." },
-      { tipo: "destacado", texto: "Tu mamá Jacheta Wajsbort era una de ellas. Había vivido en Mireckiego 8/10, a pocas cuadras de acá, con su mamá y unos primos. Sobrevivió la liquidación. Quedó encerrada en esta calle mientras el resto de su comunidad era llevado a los vagones." },
-      { tipo: "normal", texto: "Pensar en eso: lo que significa haber quedado del otro lado de ese portón." },
+      { tipo: "normal", texto: "Tras la liquidación de agosto de 1942, los alemanes retuvieron a unos 2.000 judíos considerados útiles como mano de obra. Fueron concentrados en esta calle, que quedó convertida en un campo de trabajo forzado — Zwangs-Arbeits-Lager. El resto del ghetto fue vaciado." },
+      { tipo: "destacado", texto: "Tu mamá Jacheta Wajsbort, que vivía en Mireckiego 8/10, fue una de las personas seleccionadas para permanecer en este campo." },
+      { tipo: "normal", texto: "Los trabajadores del campo de Szwarlikowska fueron empleados principalmente en la fábrica de armamentos Steyer-Daimler-Puch y en talleres de sastrería, zapatería y relojería. El campo fue liquidado en noviembre de 1942: parte de los prisioneros fueron trasladados al nuevo campo de la calle Szkolna, otros enviados a los campos de Płaszów y Ostrowiec Świętokrzyski." },
+      { tipo: "normal", texto: "El campo de Szkolna operó hasta julio de 1944, cuando los prisioneros restantes fueron evacuados a pie hacia Tomaszów Mazowiecki y de ahí en tren a Auschwitz." },
     ]
   },
   {
@@ -133,14 +130,13 @@ const PARADAS = [
     direccion: "Bóżniczna 3",
     lat: 51.401, lng: 21.1431,
     fotos: [
-      { src: BASE + 'foto_monumento.jpg', caption: 'El monumento hoy. La base de piedra irregular no es decoración: son fragmentos de la sinagoga y lápidas del cementerio destruidos por los nazis. Foto: Center for Jewish Art, Hebrew University.' }
+      { src: BASE + 'foto_monumento.jpg', caption: 'El monumento hoy. Las piedras de la base son fragmentos de la sinagoga y lápidas del cementerio destruidos por los nazis. Foto: Center for Jewish Art, Hebrew University of Jerusalem.' }
     ],
     contenido: [
-      { tipo: "normal", texto: "Acá estuvo la Gran Sinagoga de Radom. Los nazis la quemaron en 1939, apenas ocuparon la ciudad. Después del incendio demolieron las ruinas." },
-      { tipo: "normal", texto: "En 1947, los pocos sobrevivientes que quedaban en Radom juntaron fondos para construir un monumento. Lo inauguraron el 8 de agosto de 1950 — el aniversario exacto de la liquidación del ghetto." },
-      { tipo: "destacado", texto: "El escultor era un sobreviviente local. Usó como material restos de la propia sinagoga y lápidas del cementerio judío que los nazis habían destruido. El monumento está literalmente hecho con los escombros de lo que destruyeron." },
-      { tipo: "normal", texto: "Tiene una figura femenina mirando hacia arriba con el puño cerrado. Las placas dicen en yiddish: Judíos de Radom, víctimas del hitlerismo bárbaro. En polaco: A los judíos de Radom, víctimas de los crímenes de Hitler." },
-      { tipo: "normal", texto: "Después de poner el monumento, los que quedaban se fueron. Ya no había más comunidad judía en Radom. Este fue uno de sus últimos actos colectivos." },
+      { tipo: "normal", texto: "En este terreno estuvo la Gran Sinagoga de Radom, construida en el siglo XIX. Los alemanes la incendiaron en septiembre de 1939, poco después de ocupar la ciudad. Las ruinas fueron demolidas por orden del gobierno comunista polaco en la posguerra." },
+      { tipo: "normal", texto: "En 1947 los sobrevivientes judíos que quedaban en Radom iniciaron una colecta para construir un monumento. El autor fue un escultor local que había sobrevivido el Holocausto. Utilizó materiales recuperados de las ruinas de la sinagoga y fragmentos de lápidas del cementerio judío destruido por los nazis." },
+      { tipo: "destacado", texto: "El monumento fue inaugurado el 8 de agosto de 1950, en el aniversario de la liquidación del Ghetto Grande. Es un obelisco truncado con la figura en relieve de una mujer con el puño levantado. Las placas dicen en yiddish: Judíos de Radom, víctimas del hitlerismo bárbaro. En polaco: A los judíos de Radom, víctimas de los crímenes de Hitler." },
+      { tipo: "normal", texto: "Para 1948 prácticamente no quedaban judíos en Radom. La comunidad judía de la ciudad, que en 1939 tenía 30.000 personas, dejó de existir." },
     ]
   },
   {
@@ -150,10 +146,9 @@ const PARADAS = [
     lat: 51.4068, lng: 21.1416,
     fotos: [],
     contenido: [
-      { tipo: "destacado", texto: "Acá vivía tu mamá Jacheta Wajsbort." },
-      { tipo: "normal", texto: "Vivía acá con su mamá y unos primos. Esta calle estaba dentro del perímetro del Ghetto Grande — cuando sellaron el ghetto en abril de 1941, Jacheta ya estaba adentro." },
-      { tipo: "normal", texto: "Pararse frente al edificio. Mirar la fachada. Ella la veía todos los días." },
-      { tipo: "destacado", texto: "De acá sobrevivió." },
+      { tipo: "destacado", texto: "En este edificio vivía tu mamá Jacheta Wajsbort, junto con su mamá y unos primos." },
+      { tipo: "normal", texto: "La calle Mireckiego estaba dentro del perímetro del Ghetto Grande. Cuando el ghetto fue sellado en abril de 1941, Jacheta y su familia ya estaban dentro de la zona designada." },
+      { tipo: "normal", texto: "Durante la liquidación de agosto de 1942, Jacheta fue seleccionada para permanecer como mano de obra y trasladada al campo de trabajo de Szwarlikowska. No sabemos qué fue de su mamá y sus primos." },
     ]
   }
 ];
@@ -178,7 +173,6 @@ function openPanel(parada) {
   const body = document.getElementById('panel-body');
   body.innerHTML = '';
 
-  // Fotos primero
   if (parada.fotos && parada.fotos.length > 0) {
     parada.fotos.forEach(foto => {
       const bloque = document.createElement('div');
@@ -198,7 +192,6 @@ function openPanel(parada) {
     });
   }
 
-  // Texto
   parada.contenido.forEach(bloque => {
     const el = document.createElement('p');
     el.textContent = bloque.texto;
@@ -218,7 +211,6 @@ function closePanel() {
 }
 
 document.getElementById('overlay').addEventListener('click', closePanel);
-
 let startY = 0;
 document.getElementById('panel').addEventListener('touchstart', e => { startY = e.touches[0].clientY; });
 document.getElementById('panel').addEventListener('touchend', e => { if (e.changedTouches[0].clientY - startY > 60) closePanel(); });
