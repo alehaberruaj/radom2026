@@ -18,6 +18,10 @@
   html, body { height: 100%; background: var(--bg); color: var(--text); font-family: var(--font-ui); overflow: hidden; }
   #header { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; background: var(--bg); border-bottom: 1px solid var(--border); padding: 14px 18px 12px; }
   #header h1 { font-family: var(--font-serif); font-size: 18px; font-weight: normal; color: var(--text); letter-spacing: 0.02em; }
+  #weather { text-align: right; flex-shrink: 0; }
+  #weather-label { font-size: 9px; color: #555; letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 2px; }
+  #weather-data { font-size: 13px; color: var(--text-dim); }
+  #weather-data span.temp { color: var(--text); font-weight: 600; }
   #header p { font-size: 12px; color: var(--text-dim); margin-top: 2px; letter-spacing: 0.05em; text-transform: uppercase; }
   #map { position: fixed; top: 120px; left: 0; right: 0; bottom: 0; z-index: 1; }
   .leaflet-tile-pane { filter: grayscale(100%) brightness(0.35) contrast(1.1); }
@@ -72,6 +76,10 @@
 <div id="header">
   <h1>Radom — Recorrido por la memoria</h1>
   <p>Tocá cada parada para leer su historia</p>
+</div>
+<div id="weather" style="position:fixed;top:10px;right:16px;z-index:1001;text-align:right;">
+  <div id="weather-label">El clima en Radom ahora</div>
+  <div id="weather-data">cargando...</div>
 </div>
 <div id="stops-list"></div>
 <div id="map"></div>
