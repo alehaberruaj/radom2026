@@ -145,33 +145,6 @@ const PARADAS = [
   },
   {
     id: 5, tipo: "historico",
-    nombre: "El Rynek — punto de concentración",
-    direccion: "Plaza del mercado — Rynek",
-    lat: 51.40298348360912, lng: 21.142603645522602,
-    maps: "https://www.google.com/maps?q=51.40298348360912,21.142603645522602",
-    fotos: [],
-    contenido: [
-      { tipo: "normal", texto: "Durante la liquidación del Ghetto Grande, en las noches del 16 al 18 de agosto de 1942, los alemanes ordenaron a los habitantes concentrarse en esta plaza y en la calle Wałowa. Fue el punto de reunión antes de las deportaciones." },
-      { tipo: "normal", texto: "Desde acá, las columnas de deportados fueron llevadas a pie hasta el desvío ferroviario junto a la fábrica Marwil, a varios kilómetros. Los que no podían caminar eran ejecutados en el lugar. En el edificio que albergaba un matadero de aves, un grupo de niños fue asesinado con granadas." },
-      { tipo: "destacado", texto: "En tres noches, unas 25.000 personas pasaron por esta plaza. La casi totalidad fue asesinada en Treblinka." },
-    ]
-  },
-  {
-    id: 6, tipo: "familia",
-    nombre: "Los que quedaron",
-    direccion: "Szwarlikowska",
-    lat: 51.4039, lng: 21.1426,
-    maps: "https://www.google.com/maps?q=51.4039,21.1426",
-    fotos: [],
-    contenido: [
-      { tipo: "normal", texto: "Tras la liquidación de agosto de 1942, los alemanes retuvieron a unos 2.000 judíos considerados útiles como mano de obra. Fueron concentrados en esta calle, convertida en un campo de trabajo forzado — Zwangs-Arbeits-Lager. El resto del ghetto fue vaciado." },
-      { tipo: "destacado", texto: "Tu mamá Jacheta Wajsbort, que vivía en Mireckiego, fue una de las personas seleccionadas para permanecer en este campo." },
-      { tipo: "normal", texto: "Los trabajadores fueron empleados principalmente en la fábrica de armamentos Steyer-Daimler-Puch y en talleres de sastrería, zapatería y relojería. El campo fue liquidado en noviembre de 1942: parte de los prisioneros fueron trasladados al nuevo campo de la calle Szkolna, otros enviados a los campos de Płaszów y Ostrowiec Świętokrzyski." },
-      { tipo: "normal", texto: "El campo de Szkolna operó hasta julio de 1944, cuando los prisioneros restantes fueron evacuados a pie hacia Tomaszów Mazowiecki y de ahí en tren a Auschwitz." },
-    ]
-  },
-  {
-    id: 7, tipo: "historico",
     nombre: "El monumento — sitio de la Gran Sinagoga",
     direccion: "Bóżniczna 3",
     lat: 51.40103171894414, lng: 21.14302886819349,
@@ -187,7 +160,20 @@ const PARADAS = [
     ]
   },
   {
-    id: 8, tipo: "familia",
+    id: 6, tipo: "historico",
+    nombre: "El Rynek — punto de concentración",
+    direccion: "Plaza del mercado — Rynek",
+    lat: 51.40298348360912, lng: 21.142603645522602,
+    maps: "https://www.google.com/maps?q=51.40298348360912,21.142603645522602",
+    fotos: [],
+    contenido: [
+      { tipo: "normal", texto: "Durante la liquidación del Ghetto Grande, en las noches del 16 al 18 de agosto de 1942, los alemanes ordenaron a los habitantes concentrarse en esta plaza y en la calle Wałowa. Fue el punto de reunión antes de las deportaciones." },
+      { tipo: "normal", texto: "Desde acá, las columnas de deportados fueron llevadas a pie hasta el desvío ferroviario junto a la fábrica Marwil, a varios kilómetros. Los que no podían caminar eran ejecutados en el lugar. En el edificio que albergaba un matadero de aves, un grupo de niños fue asesinado con granadas." },
+      { tipo: "destacado", texto: "En tres noches, unas 25.000 personas pasaron por esta plaza. La casi totalidad fue asesinada en Treblinka." },
+    ]
+  },
+  {
+    id: 7, tipo: "familia",
     nombre: "La casa de tu mamá",
     direccion: "Mireckiego 8/10",
     lat: 51.4031845, lng: 21.1407444,
@@ -198,8 +184,22 @@ const PARADAS = [
       { tipo: "normal", texto: "La calle Mireckiego estaba dentro del perímetro del Ghetto Grande. Cuando el ghetto fue sellado en abril de 1941, Jacheta y su familia ya estaban dentro de la zona designada." },
       { tipo: "normal", texto: "Durante la liquidación de agosto de 1942, Jacheta fue seleccionada para permanecer como mano de obra y trasladada al campo de trabajo de Szwarlikowska. No sabemos qué fue de su mamá y sus primos." },
     ]
+  },
+  {
+    id: 8, tipo: "familia",
+    nombre: "Los que quedaron",
+    direccion: "Szwarlikowska",
+    lat: 51.4039, lng: 21.1426,
+    maps: "https://www.google.com/maps?q=51.4039,21.1426",
+    fotos: [],
+    contenido: [
+      { tipo: "normal", texto: "Tras la liquidación de agosto de 1942, los alemanes retuvieron a unos 2.000 judíos considerados útiles como mano de obra. Fueron concentrados en esta calle, convertida en un campo de trabajo forzado — Zwangs-Arbeits-Lager. El resto del ghetto fue vaciado." },
+      { tipo: "destacado", texto: "Tu mamá Jacheta Wajsbort, que vivía en Mireckiego, fue una de las personas seleccionadas para permanecer en este campo." },
+      { tipo: "normal", texto: "Los trabajadores fueron empleados principalmente en la fábrica de armamentos Steyer-Daimler-Puch y en talleres de sastrería, zapatería y relojería. El campo fue liquidado en noviembre de 1942: parte de los prisioneros fueron trasladados al nuevo campo de la calle Szkolna, otros enviados a los campos de Płaszów y Ostrowiec Świętokrzyski." },
+      { tipo: "normal", texto: "El campo de Szkolna operó hasta julio de 1944, cuando los prisioneros restantes fueron evacuados a pie hacia Tomaszów Mazowiecki y de ahí en tren a Auschwitz." },
+    ]
   }
-];
+]
 
 const map = L.map('map', { center: [51.4025, 21.1440], zoom: 16, zoomControl: false });
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '© OpenStreetMap' }).addTo(map);
