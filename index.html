@@ -44,6 +44,8 @@
   .foto-bloque { margin-bottom: 24px; }
   .foto-bloque img { width: 100%; display: block; border-radius: 6px; }
   .foto-caption { font-family: var(--font-ui); font-size: 12px; color: var(--text-dim); margin-top: 6px; letter-spacing: 0.03em; line-height: 1.4; font-style: italic; }
+  .maps-btn { display: flex; align-items: center; gap: 8px; background: #1A3356; color: #7EB3D8; border: 1px solid #2A4A7A; border-radius: 8px; padding: 12px 16px; font-family: var(--font-ui); font-size: 15px; text-decoration: none; margin-bottom: 24px; }
+  .maps-btn svg { flex-shrink: 0; }
   #overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 1500; }
   #overlay.show { display: block; }
   #legend { position: fixed; bottom: 20px; left: 16px; z-index: 900; display: flex; flex-direction: column; gap: 6px; }
@@ -84,7 +86,8 @@ const PARADAS = [
     id: 1, tipo: "historico",
     nombre: "La entrada al ghetto",
     direccion: "Wałowa & Żeromskiego",
-    lat: 51.4024, lng: 21.1469,
+    lat: 51.4017239, lng: 21.1461303,
+    maps: "https://www.google.com/maps?q=51.4017239,21.1461303",
     fotos: [
       { src: BASE + 'foto_entrada_historica.jpg', caption: 'Plac Stare Miasto, dentro del Ghetto Grande, circa 1941. Al fondo, la iglesia de la Santísima Trinidad, que sigue en pie hoy.' }
     ],
@@ -99,15 +102,17 @@ const PARADAS = [
   {
     id: 2, tipo: "historico",
     nombre: "El cartel de Mentlik",
-    direccion: "Wałowa 1 — entrar al patio interior, pared del fondo a la derecha",
-    lat: 51.4017, lng: 21.1436,
+    direccion: "Wałowa 1 — patio interior",
+    lat: 51.4018567, lng: 21.1463298,
+    maps: "https://www.google.com/maps?q=51.4018567,21.1463298",
     fotos: [
       { src: BASE + 'mentlik_1.jpg', caption: 'El cartel en su contexto, en la pared del patio interior de Wałowa 1.' },
-      { src: BASE + 'mentlik_2.jpg', caption: 'Detalle del cartel. En polaco: A. Mentlik / 1 Pietro (1er piso). Debajo, el mismo texto en yiddish con alfabeto hebreo. La mano con el dedo índice era un recurso gráfico habitual en avisos comerciales de la época.' },
+      { src: BASE + 'mentlik_2.jpg', caption: 'Detalle. En polaco: A. Mentlik / 1 Pietro (1er piso). Debajo, el mismo texto en yiddish con alfabeto hebreo. La mano con el dedo índice señalando era un recurso gráfico habitual en avisos comerciales de la época.' },
     ],
     contenido: [
+      { tipo: "normal", texto: "Para llegar al cartel: entrar por la puerta de Wałowa 1 — el cartel está a la derecha del patio. Si esa puerta está cerrada, se puede entrar por Żeromskiego 2; en ese caso el cartel está al fondo." },
       { tipo: "normal", texto: "Este cartel fue pintado directamente sobre la pared durante el período de entreguerras. Anuncia el hotel para comerciantes y restaurante kosher de Abram Mentlik, que operaba en este edificio al menos desde 1932. El texto aparece primero en polaco y luego en yiddish con caracteres hebreos." },
-      { tipo: "normal", texto: "Wałowa era antes de la guerra la calle comercial más activa del barrio judío de Radom. Concentraba tiendas, talleres, panaderías kosher, librerías y pequeñas sinagogas — los shtiebels. El barrio tenía también una mikve y varias instituciones comunitarias. Los judíos se asentaron en esta zona desde el siglo XVIII, cuando fueron obligados a vivir fuera de las murallas de la ciudad." },
+      { tipo: "normal", texto: "Wałowa era antes de la guerra la calle comercial más activa del barrio judío. Concentraba tiendas, talleres, panaderías kosher, librerías y pequeñas sinagogas. Los judíos se asentaron en esta zona desde el siglo XVIII, cuando fueron obligados a vivir fuera de las murallas de la ciudad." },
       { tipo: "destacado", texto: "El cartel sobrevivió la guerra, la liquidación del ghetto, la ocupación soviética y décadas de abandono. Es uno de los pocos rastros físicos visibles de la vida comercial judía que quedan en Radom." },
     ]
   },
@@ -115,45 +120,62 @@ const PARADAS = [
     id: 3, tipo: "historico",
     nombre: "Wałowa — la calle principal del ghetto",
     direccion: "Wałowa",
-    lat: 51.4013, lng: 21.1430,
+    lat: 51.40149639414829, lng: 21.144857128643118,
+    maps: "https://www.google.com/maps?q=51.40149639414829,21.144857128643118",
     fotos: [],
     contenido: [
       { tipo: "normal", texto: "Wałowa era el eje central de la vida judía de Radom desde el siglo XVIII. Cuando en 1941 se estableció el Ghetto Grande, esta calle quedó en el corazón del área sellada. El Judenrat — el consejo judío obligado por los alemanes a administrar el ghetto — tenía su sede aquí." },
       { tipo: "normal", texto: "En febrero de 1942 los alemanes ejecutaron a varias decenas de personas en el ghetto y deportaron a unos 40 dirigentes comunitarios a Auschwitz. En abril de 1942, en la llamada Acción del Miércoles Sangriento, detuvieron y enviaron a Auschwitz a representantes del Judenrat, la policía judía y activistas políticos. Estas operaciones tenían como objetivo desarticular cualquier posibilidad de resistencia organizada antes de la liquidación." },
       { tipo: "normal", texto: "La liquidación del Ghetto Grande se ejecutó entre el 16 y el 18 de agosto de 1942. Unidades de las SS, la Gestapo, gendarmes alemanes y fuerzas auxiliares ucranianas rodearon el ghetto. Operaron de noche, con reflectores instalados en las esquinas. Sacaron a los habitantes edificio por edificio." },
-      { tipo: "destacado", texto: "Los habitantes fueron concentrados en Wałowa y la plaza del mercado, y llevados a pie hasta un desvío ferroviario junto a la fábrica Marwil. Desde ahí, en vagones de carga, a Treblinka. En tres noches fueron deportadas unas 25.000 personas. La casi totalidad fue asesinada." },
+      { tipo: "destacado", texto: "Los habitantes fueron concentrados en Wałowa y en el Rynek, y llevados a pie hasta un desvío ferroviario junto a la fábrica Marwil. Desde ahí, en vagones de carga, a Treblinka. En tres noches fueron deportadas unas 25.000 personas. La casi totalidad fue asesinada." },
     ]
   },
   {
     id: 4, tipo: "familia",
     nombre: "La casa de Miriam Basia y los hijos",
-    direccion: "Wałowa 11a",
-    lat: 51.4010, lng: 21.1425,
+    direccion: "Wałowa 11a — hoy es un estacionamiento",
+    lat: 51.4014648, lng: 21.1443573,
+    maps: "https://www.google.com/maps?q=51.4014648,21.1443573",
     fotos: [],
     contenido: [
-      { tipo: "destacado", texto: "En este edificio vivían Miriam Basia Mekler Kiman y sus hijos — tus medios hermanos. Tu papá Lejbus Mekler se había escapado antes de que se formara el ghetto." },
-      { tipo: "normal", texto: "Wałowa 11a quedaba dentro del perímetro del Ghetto Grande. Miriam Basia y los hijos vivieron acá durante los años del ghetto, entre 1941 y 1942." },
-      { tipo: "normal", texto: "Durante la liquidación de agosto de 1942, los habitantes de esta calle fueron parte de las columnas concentradas en Wałowa antes de ser deportados. Lo más probable es que Miriam Basia y los hijos hayan sido deportados a Treblinka en esas tres noches." },
+      { tipo: "destacado", texto: "En este lugar vivían Miriam Basia Mekler Kiman y sus hijos — tus medios hermanos. Tu papá Lejbus Mekler se había escapado antes de que se formara el ghetto." },
+      { tipo: "normal", texto: "El edificio de Wałowa 11a ya no existe. En su lugar hoy hay un estacionamiento." },
+      { tipo: "normal", texto: "Miriam Basia y los hijos vivieron en esta dirección durante los años del ghetto, entre 1941 y 1942. Durante la liquidación de agosto de 1942, los habitantes de esta calle fueron parte de las columnas concentradas en Wałowa y el Rynek antes de ser deportados. Lo más probable es que Miriam Basia y los hijos hayan sido deportados a Treblinka en esas tres noches." },
     ]
   },
   {
-    id: 5, tipo: "familia",
+    id: 5, tipo: "historico",
+    nombre: "El Rynek — punto de concentración",
+    direccion: "Plaza del mercado — Rynek",
+    lat: 51.40298348360912, lng: 21.142603645522602,
+    maps: "https://www.google.com/maps?q=51.40298348360912,21.142603645522602",
+    fotos: [],
+    contenido: [
+      { tipo: "normal", texto: "Durante la liquidación del Ghetto Grande, en las noches del 16 al 18 de agosto de 1942, los alemanes ordenaron a los habitantes concentrarse en esta plaza y en la calle Wałowa. Fue el punto de reunión antes de las deportaciones." },
+      { tipo: "normal", texto: "Desde acá, las columnas de deportados fueron llevadas a pie hasta el desvío ferroviario junto a la fábrica Marwil, a varios kilómetros. Los que no podían caminar eran ejecutados en el lugar. En el edificio que albergaba un matadero de aves, un grupo de niños fue asesinado con granadas." },
+      { tipo: "destacado", texto: "En tres noches, unas 25.000 personas pasaron por esta plaza. La casi totalidad fue asesinada en Treblinka." },
+    ]
+  },
+  {
+    id: 6, tipo: "familia",
     nombre: "Los que quedaron",
     direccion: "Szwarlikowska",
     lat: 51.4039, lng: 21.1426,
+    maps: "https://www.google.com/maps?q=51.4039,21.1426",
     fotos: [],
     contenido: [
       { tipo: "normal", texto: "Tras la liquidación de agosto de 1942, los alemanes retuvieron a unos 2.000 judíos considerados útiles como mano de obra. Fueron concentrados en esta calle, convertida en un campo de trabajo forzado — Zwangs-Arbeits-Lager. El resto del ghetto fue vaciado." },
-      { tipo: "destacado", texto: "Tu mamá Jacheta Wajsbort, que vivía en Mireckiego 8/10, fue una de las personas seleccionadas para permanecer en este campo." },
+      { tipo: "destacado", texto: "Tu mamá Jacheta Wajsbort, que vivía en Mireckiego, fue una de las personas seleccionadas para permanecer en este campo." },
       { tipo: "normal", texto: "Los trabajadores fueron empleados principalmente en la fábrica de armamentos Steyer-Daimler-Puch y en talleres de sastrería, zapatería y relojería. El campo fue liquidado en noviembre de 1942: parte de los prisioneros fueron trasladados al nuevo campo de la calle Szkolna, otros enviados a los campos de Płaszów y Ostrowiec Świętokrzyski." },
       { tipo: "normal", texto: "El campo de Szkolna operó hasta julio de 1944, cuando los prisioneros restantes fueron evacuados a pie hacia Tomaszów Mazowiecki y de ahí en tren a Auschwitz." },
     ]
   },
   {
-    id: 6, tipo: "historico",
+    id: 7, tipo: "historico",
     nombre: "El monumento — sitio de la Gran Sinagoga",
     direccion: "Bóżniczna 3",
-    lat: 51.401, lng: 21.1431,
+    lat: 51.40103171894414, lng: 21.14302886819349,
+    maps: "https://www.google.com/maps?q=51.40103171894414,21.14302886819349",
     fotos: [
       { src: BASE + 'foto_monumento.jpg', caption: 'El monumento hoy. Las piedras de la base son fragmentos de la sinagoga y lápidas del cementerio destruidos por los nazis. Foto: Center for Jewish Art, Hebrew University of Jerusalem.' }
     ],
@@ -165,10 +187,11 @@ const PARADAS = [
     ]
   },
   {
-    id: 7, tipo: "familia",
+    id: 8, tipo: "familia",
     nombre: "La casa de tu mamá",
     direccion: "Mireckiego 8/10",
-    lat: 51.4068, lng: 21.1416,
+    lat: 51.4031845, lng: 21.1407444,
+    maps: "https://www.google.com/maps?q=51.4031845,21.1407444",
     fotos: [],
     contenido: [
       { tipo: "destacado", texto: "En este edificio vivía tu mamá Jacheta Wajsbort, junto con su mamá y unos primos." },
@@ -178,7 +201,7 @@ const PARADAS = [
   }
 ];
 
-const map = L.map('map', { center: [51.4025, 21.1435], zoom: 16, zoomControl: false });
+const map = L.map('map', { center: [51.4025, 21.1440], zoom: 16, zoomControl: false });
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '© OpenStreetMap' }).addTo(map);
 
 PARADAS.forEach(p => {
@@ -198,6 +221,16 @@ function openPanel(parada) {
   const body = document.getElementById('panel-body');
   body.innerHTML = '';
 
+  // Botón Google Maps
+  const btn = document.createElement('a');
+  btn.href = parada.maps;
+  btn.target = '_blank';
+  btn.rel = 'noopener';
+  btn.className = 'maps-btn';
+  btn.innerHTML = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#7EB3D8" stroke-width="2"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>Abrir en Google Maps`;
+  body.appendChild(btn);
+
+  // Fotos
   if (parada.fotos && parada.fotos.length > 0) {
     parada.fotos.forEach(foto => {
       const bloque = document.createElement('div');
@@ -217,6 +250,7 @@ function openPanel(parada) {
     });
   }
 
+  // Texto
   parada.contenido.forEach(bloque => {
     const el = document.createElement('p');
     el.textContent = bloque.texto;
